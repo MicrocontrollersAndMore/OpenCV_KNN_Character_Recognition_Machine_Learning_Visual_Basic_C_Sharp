@@ -176,7 +176,15 @@ namespace GenerateData4 {
                     // save classifications to file /////////////////////////////////////
 
             XmlSerializer xmlSerializer = new XmlSerializer(mtxClassifications.GetType());
-            StreamWriter streamWriter = new StreamWriter("classifications.xml");
+            StreamWriter streamWriter;
+
+            try {
+                streamWriter = new StreamWriter("classifications.xml");                     // attempt to open classifications file
+            } catch (Exception ex) {                                                        // if error is encountered, show error and return
+                txtInfo.Text = Environment.NewLine + txtInfo.Text + "unable to open 'classifications.xml', error:" + Environment.NewLine;
+                txtInfo.Text = txtInfo.Text + ex.Message + Environment.NewLine + Environment.NewLine;
+                return;
+            }
 
             xmlSerializer.Serialize(streamWriter, mtxClassifications);
             streamWriter.Close();
@@ -184,7 +192,14 @@ namespace GenerateData4 {
                     // save training images to file /////////////////////////////////////
 
             xmlSerializer = new XmlSerializer(mtxTrainingImages.GetType());
-            streamWriter = new StreamWriter("images.xml");
+            
+            try {
+                streamWriter = new StreamWriter("images.xml");                     // attempt to open classifications file
+            } catch (Exception ex) {                                                        // if error is encountered, show error and return
+                txtInfo.Text = Environment.NewLine + txtInfo.Text + "unable to open 'images.xml', error:" + Environment.NewLine;
+                txtInfo.Text = txtInfo.Text + ex.Message + Environment.NewLine + Environment.NewLine;
+                return;
+            }
 
             xmlSerializer.Serialize(streamWriter, mtxTrainingImages);
             streamWriter.Close();

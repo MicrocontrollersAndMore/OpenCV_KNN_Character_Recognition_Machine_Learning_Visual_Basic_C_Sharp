@@ -161,7 +161,15 @@ Public Class frmMain
                 'save classifications to file '''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         Dim xmlSerializer As XmlSerializer = New XmlSerializer(mtxClassifications.GetType)
-        Dim streamWriter As StreamWriter = New StreamWriter("classifications.xml")
+        Dim streamWriter As StreamWriter
+
+        Try
+            streamWriter = new StreamWriter("classifications.xml")          'attempt to open classifications file
+        Catch ex As Exception                                               'if error is encountered, show error and return
+            txtInfo.Text = vbCrLf + txtInfo.Text + "unable to open 'classifications.xml', error:" + vbCrLf
+            txtInfo.Text = txtInfo.Text + ex.Message + vbCrLf + vbCrLf
+            Return
+        End Try
 
         xmlSerializer.Serialize(streamWriter, mtxClassifications)
         streamWriter.Close()
@@ -169,8 +177,15 @@ Public Class frmMain
                 'save training images to file '''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         xmlSerializer = New XmlSerializer(mtxTrainingImages.GetType)
-        streamWriter = New StreamWriter("images.xml")
         
+        Try
+            streamWriter = new StreamWriter("images.xml")                   'attempt to open images file
+        Catch ex As Exception                                               'if error is encountered, show error and return
+            txtInfo.Text = vbCrLf + txtInfo.Text + "unable to open 'images.xml', error:" + vbCrLf
+            txtInfo.Text = txtInfo.Text + ex.Message + vbCrLf + vbCrLf
+            Return
+        End Try
+
         xmlSerializer.Serialize(streamWriter, mtxTrainingImages)
         streamWriter.Close()
 

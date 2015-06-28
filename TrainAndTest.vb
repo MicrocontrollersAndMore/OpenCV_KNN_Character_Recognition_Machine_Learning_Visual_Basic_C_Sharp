@@ -41,7 +41,15 @@ Public Class frmMain
         Dim intValidChars As New List(Of Integer)(New Integer() { Asc("0"), Asc("1"), Asc("2"), Asc("3"), Asc("4"), Asc("5"), Asc("6"), Asc("7"), Asc("8"), Asc("9") } )
         
         Dim xmlSerializer As XmlSerializer = New XmlSerializer(mtxClassifications.GetType)          'these variables are for
-        Dim streamReader As StreamReader = New StreamReader("classifications.xml")                  'reading from the XML files
+        Dim streamReader As StreamReader                                                            'reading from the XML files
+
+        Try
+            streamReader = new StreamReader("classifications.xml")          'attempt to open classifications file
+        Catch ex As Exception                                               'if error is encountered, show error and return
+            txtInfo.Text = vbCrLf + txtInfo.Text + "unable to open 'classifications.xml', error:" + vbCrLf
+            txtInfo.Text = txtInfo.Text + ex.Message + vbCrLf + vbCrLf
+            Return
+        End Try
 
                 'read from the classifications file the 1st time, this is only to get the number of rows, not the actual data
         mtxClassifications = CType(xmlSerializer.Deserialize(streamReader), Global.Emgu.CV.Matrix(Of Single))
@@ -54,15 +62,28 @@ Public Class frmMain
         mtxClassifications = New Matrix(Of Single)(intNumberOfTrainingSamples, 1)
         mtxTrainingImages = New Matrix(Of Single)(intNumberOfTrainingSamples, RESIZED_IMAGE_WIDTH * RESIZED_IMAGE_HEIGHT)
 
-        streamReader = New StreamReader("classifications.xml")          'reinitialize the stream reader
+        Try
+            streamReader = new StreamReader("classifications.xml")          'reinitialize the stream reader
+        Catch ex As Exception                                               'if error is encountered, show error and return
+            txtInfo.Text = vbCrLf + txtInfo.Text + "unable to open 'classifications.xml', error:" + vbCrLf
+            txtInfo.Text = txtInfo.Text + ex.Message + vbCrLf + vbCrLf
+            Return
+        End Try
 
-                'read from the classifications file again, this time we can get the actual data
+                    'read from the classifications file again, this time we can get the actual data
         mtxClassifications = CType(xmlSerializer.Deserialize(streamReader), Global.Emgu.CV.Matrix(Of Single))
 
         streamReader.Close()            'close the classifications XML file
 
         xmlSerializer = New XmlSerializer(mtxTrainingImages.GetType)            'reinstantiate file reading variables
-        streamReader = New StreamReader("images.xml")                           '
+        
+        Try
+            streamReader = New StreamReader("images.xml")
+        Catch ex As Exception                                               'if error is encountered, show error and return
+            txtInfo.Text = vbCrLf + txtInfo.Text + "unable to open 'images.xml', error:" + vbCrLf
+            txtInfo.Text = txtInfo.Text + ex.Message + vbCrLf + vbCrLf
+            Return
+        End Try
 
         mtxTrainingImages = CType(xmlSerializer.Deserialize(streamReader), Global.Emgu.CV.Matrix(Of Single))        'read from training images file
         streamReader.Close()            'close the training images XML file
