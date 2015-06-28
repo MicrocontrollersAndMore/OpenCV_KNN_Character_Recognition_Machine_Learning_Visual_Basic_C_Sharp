@@ -113,7 +113,7 @@ Public Class frmMain
 
         While(Not contours Is Nothing)                      'for each contour
             Dim contour As Contour(Of Point) = contours.ApproxPoly(contours.Perimeter * 0.0001)         'get the current contour, note that the lower the multiplier, the higher the precision
-            If (contour.Area > MIN_CONTOUR_AREA) Then                           'if contour is big enough to consider
+            If (ContourIsValid(contour)) Then                                   'if contour is big enough to consider
                 Dim rect As Rectangle = contour.BoundingRectangle()             'get the bounding rect
                 imgTrainingNumbers.Draw(rect, New Bgr(Color.Red), 2)            'draw red rectangle around each contour as we ask user for input
                 Dim imgROI As Image(Of Gray, Byte) = imgThresh.Copy(rect)       'get ROI image of current char
@@ -200,5 +200,5 @@ Public Class frmMain
         End If                                                          'identifying if a contour is valid !!
         Return False
     End Function
-    
+
 End Class
