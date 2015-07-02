@@ -2,6 +2,12 @@
 
 ' using Emgu CV 2.4.10
 
+'add the following components to your form:
+'btnOpenTestImage (Button)
+'lblChosenFile (Label)
+'txtInfo (TextBox)
+'ofdOpenFile (OpenFileDialog)
+
 Option Explicit On      'require explicit declaration of variables, this is NOT Python !!
 Option Strict On        'restrict implicit data type conversions to only widening conversions
 
