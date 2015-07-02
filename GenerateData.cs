@@ -128,7 +128,7 @@ namespace GenerateData4 {
 
             while (contours != null) {
                 Contour<Point> contour = contours.ApproxPoly(contours.Perimeter * 0.0001);          //get the current contour, note that the lower the multiplier, the higher the precision
-                if (contour.Area > MIN_CONTOUR_AREA) {                          // if contour is big enough to consider
+                if (ContourIsValid(contour)) {                                  // if contour is big enough to consider
                     Rectangle rect = contour.BoundingRectangle;                 // get the bounding rect
                     imgTrainingNumbers.Draw(rect, new Bgr(Color.Red), 2);       // draw red rectangle around each contour as we ask user for input
                     Image<Gray, Byte> imgROI = imgThresh.Copy(rect);            // get ROI image of current char
